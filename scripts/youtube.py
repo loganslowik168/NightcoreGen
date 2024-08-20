@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 import yt_dlp
 import ffmpeg
 import sys
+import os
+import shutil
 
 ydl_opts = {
     'format': 'bestaudio/best',

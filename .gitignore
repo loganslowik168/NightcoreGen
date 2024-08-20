@@ -4,3 +4,4 @@
 *.ogg
 song_inputs
 song_outputs
+scripts/__pycache__/*
