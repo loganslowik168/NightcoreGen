@@ -20,6 +20,7 @@ def find_and_move_wav(src_directory, dest_directory):
             print(f"Moved {filename} to {dest_directory}")
             return
 
+    
 def main():
     if len(sys.argv) != 3:
         print("Usage: python3 main.py <youtube_link> <octaval_increase>")
@@ -29,11 +30,23 @@ def main():
     speed_arg = sys.argv[2]
 
     try:
-        # Run youtube.py with the first argument
-        subprocess.run(['python3', './scripts/youtube.py', youtube_arg], check=True)
-        find_and_move_wav('./', './song_inputs/')
+        # ensure writeback file exists
+        if not os.path.exists(".lastsong.txt"):
+            with open(".lastsong.txt",'w') as lastSongFile:
+                lastSongFile.write("")
+        # see if song is still loaded from last time
+        with open(".lastsong.txt",'r') as lastSongFile:
+            if (lastSongFile.read() != youtube_arg):
+                print("---------- Downloading song ----------")
+                # Run youtube.py with the first argument
+                subprocess.run(['python3', './scripts/youtube.py', youtube_arg], check=True)
+                find_and_move_wav('./', './song_inputs/')
+
         # Run speed.py with the second argument
         subprocess.run(['python3', './scripts/speed.py', speed_arg], check=True)
+        # writeback to file
+        with open(".lastsong.txt",'w') as lastSongFile:
+            lastSongFile.write(youtube_arg)
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running the scripts: {e}")

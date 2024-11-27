@@ -2,6 +2,7 @@
 *.mp3
 *.m4a
 *.ogg
+.lastsong.txt
 song_inputs
 song_outputs
 scripts/__pycache__/*
